@@ -1,15 +1,15 @@
 ## Question: Add an extra column containing the salary of the previous row employee
 
 ### Input
-A 1000
-B 2000
-C 3000
+A 1000  
+B 2000  
+C 3000  
 
 
 ### Expected Output
-A 1000 null
-B 2000 1000
-C 3000 2000
+A 1000 null  
+B 2000 1000  
+C 3000 2000  
 
 
 ---
