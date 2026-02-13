@@ -1,11 +1,11 @@
 ## Question: Send alternate records into two different target files
 
 ### Example Input
-A
-B
-C
-D
-E
+A  
+B  
+C  
+D  
+E  
 
 ---
 
@@ -23,11 +23,11 @@ E
    - Start value = 1, Increment = 1.  
    - Assigns a sequence number to each row.
 
-A → 1
-B → 2
-C → 3
-D → 4
-E → 5
+A → 1  
+B → 2  
+C → 3  
+D → 4  
+E → 5  
 
 ---
 
