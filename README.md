@@ -16,9 +16,10 @@ It showcases solutions to real-world scenarios, challenging interview problems, 
 ### 🔹 Challenging Interview Questions
 Mappings and workflows commonly asked in ETL interviews, with detailed explanations:
 - [Duplicate vs Unique Segregation](Challenging_Interview_Questions/Duplicate_Unique_Segregation_Mapping/)
-- [Max Salary per Department](Challenging_Interview_Questions/Max_Salary/)
-- [Join Strategies](Challenging_Interview_Questions/Join_Strategies/)
-- [Slowly Changing Dimensions (SCD)](Challenging_Interview_Questions/SCD/)
+- [Duplicate vs Unique Segregation using Dense Ranking](Challenging_Interview_Questions/Duplicate_Unique_DenseRank_Mapping/)
+- [First And LastRow Extractor](Challenging_Interview_Questions/FirstLastRowExtractor/)
+- [Alternate Record Split](Challenging_Interview_Questions/AltRecordSplitter/)
+- [Add Previous Row Salary](Challenging_Interview_Questions/AddPreviousRowSalary/)
 - [Error Handling](Challenging_Interview_Questions/Error_Handling/)
 
 ---
