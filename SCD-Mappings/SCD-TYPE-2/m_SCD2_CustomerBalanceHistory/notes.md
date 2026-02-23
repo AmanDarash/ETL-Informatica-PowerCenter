@@ -26,7 +26,7 @@ The dimension table (`CUSTOMER_BALANCE_DIM`) contains:
 
 3. **Aggregator Transformation**  
    - Group by `Customer_ID`.  
-   - Calculate aggregated balance (`SUM(amt)`).  
+   - Calculate aggregated balance (`SUM(Transaction_Amount)`).  
    - Use `MAX(Transaction_Date)` to capture the latest transaction date.
 
 4. **Lookup Transformation**  
@@ -38,7 +38,7 @@ The dimension table (`CUSTOMER_BALANCE_DIM`) contains:
    - **Join Type**: Master Outer Join.  
    - **Master Pipeline**: Lookup.  
    - **Detail Pipeline**: Aggregator.  
-   - This ensures all aggregated balances (Detail) flow through, even if Lookup doesn’t find a match.
+   - Ensures all aggregated balances flow through, even if Lookup doesn’t find a match.
 
 6. **Expression Transformation**  
    - Create flags:  
@@ -75,12 +75,30 @@ The dimension table (`CUSTOMER_BALANCE_DIM`) contains:
 
 ---
 
+## 🔧 Blockages Faced & How I Solved Them
+
+- **Issue 1: Precision mismatch in balance comparison**  
+  - Initially, `BALANCE` and `total_amount` were stored as `DOUBLE`.  
+  - Floating‑point precision caused equality checks to fail.  
+  - **Fix**: Converted both to `INTEGER` (or `NUMBER(15,2)` for finance) before comparison.
+
+- **Issue 2: Multiple matches in Lookup**  
+  - Lookup sometimes returned more than one record for a customer.  
+  - **Fix**: Added filter `Current_Flag = 'Y'` to ensure only active record is fetched.
+
+- **Issue 3: Unnecessary updates for unchanged balances**  
+  - Router was sending unchanged rows to Update pipeline.  
+  - **Fix**: Added condition `lkp_balance = agg_balance` → drop group.
+
+---
+
 ## 🎯 Key Insight
 - **Master Outer Join** ensures all aggregated balances flow through.  
 - **Router** cleanly splits rows into Insert, Update, or Drop.  
-- **Update Strategy** applies SCD Type 2 logic: expire old records, insert new ones, preserve history.
+- **Update Strategy** applies SCD Type 2 logic: expire old records, insert new ones, preserve history.  
+- **Datatype discipline** (INTEGER/NUMBER) prevents floating‑point mismatches.
 
 ---
 
 ## 📝 Interview Tip
-> “For SCD Type 2, I aggregate balances per customer, then use Lookup + Joiner to check existing records. Router splits rows into Insert, Update, or Drop. Insert pipeline adds new customers with open‑ended dates. Update pipeline expires old records and inserts new ones with updated balance. Drop group ensures unchanged balances don’t cause redundant updates. This way, history is preserved efficiently.”
+> “For SCD Type 2, I aggregate balances per customer, then use Lookup + Joiner to check existing records. Router splits rows into Insert, Update, or Drop. Insert pipeline adds new customers with open‑ended dates. Update pipeline expires old records and inserts new ones with updated balance. Drop group ensures unchanged balances don’t cause redundant updates. I faced issues with floating‑point mismatches and multiple lookup matches, but solved them by enforcing datatypes and filtering only active records. This way, history is preserved efficiently.”
